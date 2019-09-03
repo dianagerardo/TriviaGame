@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>My Crystal Game</title>
+    <title>My Trivia Game</title>
 
     <!-- This links to Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -20,40 +20,236 @@
     <!--Links to my external stylesheets-->
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/javascript/game.js"></script>
+    <script src="assets/javascript/app.js"></script>
 
 </head>
 
 <body>
+    <div id="game"></div>
+    <div id="container">
+        <div id="title">TRIVIA</div>
+        <div id="questions"></div>
+        <script>
 
-    <div class="container">
+            $(document).ready(function () {
+                // You'll create a trivia game that shows only one question until the player answers it or their time runs out.
 
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1>Match the Prize!</h1>
+                //////////////////////////////////
 
-            </div>
-        </div>
-        <div class="row">
+                // VARIABLES //
 
-            <div class="col-12">
-                <div class="card text-center" style="width: 10rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Number to Match:</h5>
-                        <p id="number-text">#</p>
-                    </div>
-                </div>
-            </div>
+                /////////////////////////////////
 
-        </div>
-        <div class="row">
-            <div class="col-12 text-center buttons">
-                <button type="button" class="btn btn-info" id="restart">Restart</button>
-            </div>
-        </div>
-       
-        <!-- You'll create a trivia game that shows only one question until the player answers it or their time runs out. -->
-    </div>
+                //Show start button on page
+                var btn = document.createElement("BUTTON");
+                btn.innerHTML = "START";
+                document.getElementById("title").appendChild(btn);
+                btn.setAttribute("class", "btn btn-info");
+                btn.setAttribute("id", "start");
+                //when start button clicked, run the start function
+                var start = document.getElementById("start");
+
+                var timerText = "";
+                var timer = 101;
+                var timerInterval = "";
+                var triviaQuestion = Math.floor((Math.random() * 5) + 1);
+
+                //This should hold my questions array
+                var questions = ["What is the common element between Grey, Bean, Canada, Brent, and Barnacle?", "What is the scent used for an artificial hare at greyhound racing tracks?", "The hippopotamus belongs to what animal family", "In Kansas By law, in Kansas,  you can't drive what down the public street", "Of all of the insects, which has the best eyesight?", "Slugs have four of what?", "What is a giraffe's favorite food?"];
+
+                var answers = [
+                    set0 = ["They are types of Geese", " They are a type of drink", " They are a type of food", " They are a type of fashion"],
+                    set0Link = ["assets/images/geese_.jpg", "assets/images/watermelon-drink.jpg", "assets/images/food.jpg", "assets/images/clothing.jpg"],
+                    set1 = ["Yufeng ", "Cologne ", "Arquiste ", "Anise "],
+                    set1Link = ["assets/images/geese_.jpg", "assets/images/watermelon-drink.jpg", "assets/images/food.jpg", "assets/images/clothing.jpg"],
+                    set2 = ["Horse ", "Pig ", "Whale ", "Racoon "],
+                    set3 = ["A train ", "A skooter ", "A car ", "A buffalo "],
+                    set4 = ["Dragonfly ", "Beetles ", "Ant ", "Mosquito "],
+                    set5 = ["Feet ", "Antennae ", "Noses ", "Eyes "],
+                    set6 = ["Acacia leaves ", "Sycamore roots ", "Tall grass ", "Baobab bark "],
+                ];
+
+                var correctAnswers = [0, 3, 1, 3, 0, 2, 0];
+                var gameAnswers = [];
+
+                // On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
+                var correctAnswers = "";
+                var incorrectAnswers = "";
+                var restartGame = "";
+                var questionIndex = 0;
+                var score = 0;
+                var item = "";
+                var anchor = "";
+                var answerLink = "";
+
+                /////////////////////////////////////
+
+                // FUNCTIONS //
+
+                /////////////////////////////////////
+
+                // START FUNCTIONS //
+                start.onclick = function () {
+                    alert("start now");
+                    document.getElementById("title").removeChild(btn);
+                    timerFunction();
+                    questionSelector();
+                    scoreFunction();
+                };
+
+                scoreFunction = function (){
+                    scoreText = document.createElement("P");
+                    scoreText.innerHTML = "Score: " + score;
+                    document.createAttribute("id","score-text");
+                    document.getElementById("title").appendChild(scoreText);
+                }
+
+                /////////////////////////////////////
+
+                // TIMER FUNCTIONS //
+
+                /////////////////////////////////////
+                timerFunction = function () {
+                    timerText = document.createElement("P");
+                    timerText.innerHTML = "Time Left: " + timer;
+                    document.getElementById("title").appendChild(timerText);
+
+                    timerText.setAttribute("id", "timer");
+                    clearInterval(timerInterval);
+                    timerInterval = setInterval(decrease, 1000);
+
+                    decrease();
+                };
+
+                decrease = function () {
+                    //  Decrease number by one.
+                    timer--;
+                    //  Show the number in the #show-number tag.
+                    timerText.innerHTML = "Time Left: " + timer;
+                    //  Once number hits zero...
+
+                };
+
+                stop = function () {
+                    //  Clears our intervalId
+                    //  We just pass the name of the interval
+                    //  to the clearInterval function.
+                    clearInterval(timerInterval);
+                };
+
+                restart = function () {
+                    alert("clicked");
+                };
+
+                //////////////////////////////////////////
+
+                // QUESTION FUNCTIONS //
+
+                /////////////////////////////////////////
+                // Functions to generate questions and answer options
+                // When game is started, a question and answer set should be picked and displayed in the question div
+                function questionSelector() {
+                    if (questionIndex <= (questions.length - 1)) {
+                        questionText = document.createElement("P");
+                        questionText.innerHTML = "Question: " + questions[questionIndex];
+                        document.getElementById("questions").appendChild(questionText);
+                        questionText.setAttribute("id", "question-text")
+
+                        makeUL(answers[questionIndex]);
+                    }
+
+                    else {
+                        document.getElementById("questions").innerHTML = "Game Over!";
+                        document.getElementById("score").innerHTML = "Final Score: " + score + " out of " + questions.length;
+                    };
+                };
+                function makeUL(array) {
+                    // Create the list element:
+                    var list = document.createElement('ul');
+
+                    for (var i = 0; i < array.length; i++) {
+                        // Create the list item:
+                        item = document.createElement('li');
+                        anchor = document.createElement("a");
+                        anchor.setAttribute("id", "links");
+                        anchor.innerText = array[i];
+
+                        answerLink = anchor.href = set0Link[i];
+
+
+                        var elem = document.createElement("li");
+                        elem.appendChild(anchor);
+                        questionText.appendChild(elem);
+                        document.getElementById("question-text").appendChild(elem)
+
+                        // Set its contents:
+                        item.appendChild(document.createTextNode(array[i]));
+
+                        // Add it to the list:
+                        list.appendChild(item);
+                    }
+
+                    // Finally, return the constructed list:
+                    return list;
+                    document.getElementById('question-text').appendChild(makeUL(options[0]));
+                };
+
+                var ansLink = document.getElementById("links")
+                ansLink.onclick = function (){
+
+                function userAnswer() {
+                
+                    var answerIndex = answerLink.indexOf();
+                    // Get the actual answer index 
+                    var actualCorrectAnswerIndex = gameAnswers[questionIndex];
+                    alert("I've been clicked");
+                    if (/* whichever link id clicked, compare to the right answer array*/ actualCorrectAnswerIndex == answerIndex) {
+
+                        //if answer is correct update score++, questionIndex++ and call questionSelector() to select new question
+                        score++;
+                        questionIndex++;
+                        alert("This is correct");
+                        questionSelector();
+                        timer = 100;
+
+                        // If the player selects the correct answer, show a screen congratulating them for choosing the right option. After a few seconds, display the next question -- do this without user input.
+                    }
+
+                    else if (/* whichever link id clicked, compare to the right answer array*/ actualCorrectAnswerIndex !== answerIndex) {
+                        //else if question is wrong, show the right answer, update score and move to next question
+                        alert("Not quite.");
+                        // Adds to the question index
+                        questionIndex++;
+                        // Gives new question
+                        questionSelector();
+                        // Restarts timer 
+                        timer = 100;
+
+                        // If else the player chooses the wrong answer, tell the player they selected the wrong option and then display the correct answer. Wait a few seconds, then show the next question.
+                    }
+
+                    else if (timer === 0) {
+                        //  ...run the stop function.
+                        stop();
+                        //  Alert the user that time is up.
+                        alert("Time Up!");
+                        // Adds to the question index
+                        questionIndex++;
+                        // Gives new question
+                        questionSelector();
+                        // Restarts timer 
+                        timer = 100;
+                        // If else the player runs out of time, tell the player that time's up and display the correct answer. Wait a few seconds, then show the next question.
+
+                    }
+
+
+                };
+            };
+
+            });
+
+        </script>
 
 </body>
 
