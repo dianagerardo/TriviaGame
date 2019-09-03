@@ -18,4 +18,12 @@
 
 
 ## HOW TO PLAY
-*
+* Click on the start button to get a question.
+* Each question is timed. You will get 100 seconds to answer the question.
+*Click on the answer choice you belive is correct. 
+    *If this answer is correct, you will get an image with a message that says correct and you will get one point. 
+    *If this answer is not correct, or you run out of time, you will get a message that says not correct, and then the correct image and answer will show up on the screen.
+*After this happens, another question will load, and the timer will reset to 100 seconds.
+*When the questions run out, your score will be displayed on the screen.
+
+Good Luck!
