@@ -43,7 +43,7 @@
                 //Show start button on page
                 var btn = document.createElement("BUTTON");
                 btn.innerHTML = "START";
-                document.getElementById("title").appendChild(btn);
+                document.getElementById("questions").appendChild(btn);
                 btn.setAttribute("class", "btn btn-info");
                 btn.setAttribute("id", "start");
                 //when start button clicked, run the start function
@@ -91,10 +91,12 @@
                 // START FUNCTIONS //
                 start.onclick = function () {
                     alert("start now");
-                    document.getElementById("title").removeChild(btn);
+                    document.getElementById("questions").removeChild(btn);
+                    scoreFunction();
                     timerFunction();
                     questionSelector();
-                    scoreFunction();
+                    restart();
+                   
                 };
 
                 scoreFunction = function (){
@@ -102,8 +104,25 @@
                     scoreText.innerHTML = "Score: " + score;
                     document.createAttribute("id","score-text");
                     document.getElementById("title").appendChild(scoreText);
-                }
+                };
 
+                // function restart(){
+                restart = function (){
+                restartBtn = document.createElement("BUTTON");
+                restartBtn.innerHTML = "RESTART";
+                document.getElementById("questions").appendChild(restartBtn);
+                restartBtn.setAttribute("class", "btn btn-warning");
+                restartBtn.setAttribute("id", "restart");
+                
+                };
+                // var restartClicked = document.getElementById("restart");
+
+                // restartClicked.onclick = function (){
+                //     alert("restart");
+                //     questionSelector();
+                //     timerFunction();
+                //     scoreFunction();
+                // };
                 /////////////////////////////////////
 
                 // TIMER FUNCTIONS //
@@ -137,9 +156,7 @@
                     clearInterval(timerInterval);
                 };
 
-                restart = function () {
-                    alert("clicked");
-                };
+                
 
                 //////////////////////////////////////////
 
@@ -160,7 +177,7 @@
 
                     else {
                         document.getElementById("questions").innerHTML = "Game Over!";
-                        document.getElementById("score").innerHTML = "Final Score: " + score + " out of " + questions.length;
+                        document.getElementById("score").innerHTML = "Final Score: " + score + " out of " + questions.length + ".";
                     };
                 };
                 function makeUL(array) {
@@ -170,15 +187,24 @@
                     for (var i = 0; i < array.length; i++) {
                         // Create the list item:
                         item = document.createElement('li');
-                        anchor = document.createElement("a");
-                        anchor.setAttribute("id", "links");
-                        anchor.innerText = array[i];
+                        input = document.createElement("input");
+                        input.setAttribute("type", "radio");
+                        input.setAttribute("class", "form-check-input");
+                        input.setAttribute("name", "exampleRadios");
+                        input.setAttribute("id", "exampleRadios1");
+                        input.setAttribute("value", "option1");
 
-                        answerLink = anchor.href = set0Link[i];
+                        label = document.createElement("label");
+                        label.setAttribute("class", "form-check-label");
+                        label.setAttribute("for", "exampleRadios1");
+                        var labelText = document.getElementsByClassName("form-check-label");
+                        labelText.setAttribute("value" + "array[i]");
 
+                        //set image for correct answer
+                        // document.getElementById("myImage").src = "landscape.jpg";
 
                         var elem = document.createElement("li");
-                        elem.appendChild(anchor);
+                        elem.appendChild(input);
                         questionText.appendChild(elem);
                         document.getElementById("question-text").appendChild(elem)
 
@@ -194,7 +220,7 @@
                     document.getElementById('question-text').appendChild(makeUL(options[0]));
                 };
 
-                var ansLink = document.getElementById("links")
+                var ansLink = document.getElementsByTagName("a")
                 ansLink.onclick = function (){
 
                 function userAnswer() {
